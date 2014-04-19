@@ -1,8 +1,0 @@
-"Gamemode"
-{
-	"base"			"base"
-	"title" 		"Hysteria"
-	"version"		"3.0.0 BETA"
-	"maps" 			"^cs_"
-	"menusystem" 	"1"
-}
