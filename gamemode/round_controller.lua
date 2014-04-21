@@ -50,7 +50,7 @@ function GM:OnPreRoundStart(num)
 	
 	-- Swap teams only if this isn't the first round and the setting is enabled.
 	if GetGlobalInt("RoundNumber") != 1 && SWAP_TEAMS_EVERY_ROUND == 1 && (team.GetScore(TEAM_PROPS) + team.GetScore(TEAM_HUNTERS)) > 0 then
-		math.randomseed( os.time() )
+		/*math.randomseed( os.time() )
 		x = math.random(1,100)
 		for _, pl in pairs(player.GetAll()) do
 			x = math.random(1,100)
@@ -86,8 +86,8 @@ function GM:OnPreRoundStart(num)
 					if(PERCENT_CHANCE<1)then PERCENT_CHANCE=1 end
 				end
 			end
-			pl:ChatPrint("The Infection has begun!")
-		end
+			pl:ChatPrint("The bots are running!")
+		end*/
 	end
 	
 	
@@ -205,6 +205,7 @@ function GM:RoundStart()
 	timer.Create( "RoundEndTimer", roundDuration, 0, function() GAMEMODE:RoundTimerEnd() end )
 	timer.Create( "CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end )
 	
+	
 	SetGlobalFloat( "RoundEndTime", CurTime() + roundDuration );
 	
 end
@@ -294,19 +295,23 @@ function GM:PlayerDeath(victim, weapon, killer)
 		if(victim:Team() == 1) then
 			Msg( "Human " .. victim:GetName() .. " was killed\n" )
 			victim:SetTeam(TEAM_PROPS)
-			--killer:SetHealth(killer:Health()+50)
+			killer:SetHealth(killer:Health()+50)
 		else
 			victim:Spectate(OBS_MODE_CHASE)
-			victim:SpectateEntity(team.GetPlayers(TEAM_PROPS)[1])
+			victim:SetTeam(TEAM_SPECTATOR)
 		end
 	elseif(killer:Team() == 1) then
 		victim:Spectate(OBS_MODE_CHASE)
 		if(victim:Team() == 1 and team.NumPlayers(TEAM_HUNTERS) != 0) then
 			victim:SpectateEntity(team.GetPlayers(TEAM_HUNTERS)[1])
+			killer:SetHealth(killer:Health()-50)
 		elseif (victim:Team() == 2 and team.NumPlayers(TEAM_PROPS) != 0) then
 			victim:SpectateEntity(team.GetPlayers(TEAM_PROPS)[1])
+			killer:SetHealth(killer:Health()+50)
 		end
+		victim:SetTeam(TEAM_SPECTATOR)
 	end
+	victim:PrintMessage(HUD_PRINTTALK, killer:Nick().." killed you!\n")
 	victim:CreateRagdoll()
 	
 end
@@ -356,7 +361,7 @@ function GM:CheckPlayerDeathRoundEnd()
 					if(PERCENT_CHANCE<1)then PERCENT_CHANCE=1 end
 				end
 			end
-			pl:ChatPrint("The Infection has begun!")
+			pl:ChatPrint("The bots are running!")
 		end
 		GAMEMODE:RoundEndWithResult(1001, "Draw, everyone loses!")
 		return
@@ -402,7 +407,7 @@ function GM:CheckPlayerDeathRoundEnd()
 					if(PERCENT_CHANCE<1)then PERCENT_CHANCE=1 end
 				end
 			end
-			pl:ChatPrint("The Infection has begun!")
+			pl:ChatPrint("The bots are running!!")
 		end
 		GAMEMODE:RoundEndWithResult(team_id, team.GetName(team_id).." win!")
 		return
@@ -428,7 +433,7 @@ end
 function GM:CheckRoundEndInternal()
 
 	if ( !GAMEMODE:InRound() ) then return end
-
+	
 	GAMEMODE:CheckRoundEnd()
 	
 	timer.Create( "CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEndInternal() end )
@@ -444,7 +449,44 @@ function GM:RoundTimerEnd()
 		return
 		
 	end
-	
+	math.randomseed( os.time() )
+		x = math.random(1,100)
+		for _, pl in pairs(player.GetAll()) do
+			x = math.random(1,100)
+			if(team.NumPlayers(TEAM_PROPS) == 0) then
+				pl:SetTeam(TEAM_PROPS)
+			else
+				if(x>PERCENT_CHANCE) then
+					pl:SetTeam(TEAM_HUNTERS)
+					PERCENT_CHANCE=PERCENT_CHANCE-5
+				else
+					local ptske = team.GetPlayers(TEAM_PROPS)[1]
+					ptske:SetTeam(TEAM_HUNTERS)
+					pl:SetTeam(TEAM_PROPS)
+					PERCENT_CHANCE=PERCENT_CHANCE+5
+					if(PERCENT_CHANCE<1)then PERCENT_CHANCE=1 end
+				end
+			end
+			pl:ChatPrint("The Infection has begun!")
+		end
+		for _, pl in pairs(player.GetBots()) do
+			x = math.random(1,100)
+			if(team.NumPlayers(TEAM_PROPS) == 0) then
+				pl:SetTeam(TEAM_PROPS)
+			else
+				if(x>PERCENT_CHANCE) then
+					pl:SetTeam(TEAM_HUNTERS)
+					PERCENT_CHANCE=PERCENT_CHANCE-5
+				else
+					local ptske = team.GetPlayers(TEAM_PROPS)[1]
+					ptske:SetTeam(TEAM_HUNTERS)
+					pl:SetTeam(TEAM_PROPS)
+					PERCENT_CHANCE=PERCENT_CHANCE+5
+					if(PERCENT_CHANCE<1)then PERCENT_CHANCE=1 end
+				end
+			end
+			pl:ChatPrint("The bots are running!")
+		end
 	-- If the timer reached zero, then we know the Props team won beacause they didn't all die.
 	GAMEMODE:RoundEndWithResult(1001, "Time is up! No one wins.")
 	

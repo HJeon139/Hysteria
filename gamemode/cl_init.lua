@@ -19,7 +19,7 @@ include("vgui/vgui_hudelement.lua")
 include("vgui/vgui_hudbase.lua")
 include("vgui/vgui_hudcommon.lua")
 include("cl_hud.lua")
-include("cl_scoreboard.lua")
+--include("cl_scoreboard.lua")
 
 
 -- Fonts!

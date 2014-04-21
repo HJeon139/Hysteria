@@ -15,7 +15,7 @@ AddCSLuaFile("vgui/vgui_scoreboard_small.lua")
 AddCSLuaFile("cl_skin.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_init.lua")
-AddCSLuaFile("cl_scoreboard.lua")
+--AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_splashscreen.lua")
 AddCSLuaFile("config.lua")
 AddCSLuaFile("shared.lua")
@@ -79,7 +79,7 @@ function GM:EntityTakeDamage(target, dmg_info)
 		
 		if attacker:Health() <= 0 then
 		
-			MsgAll(attacker:Name() .. " felt guilty for hurting so many innocent props and committed suicide\n")
+			MsgAll(attacker:Name() .. " felt guilty for killing so many innocent people and committed suicide\n")
 			attacker:Kill()
 			
 		end

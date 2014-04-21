@@ -121,10 +121,10 @@ function GM:CreateScoreboard( ScoreBoard )
 	ScoreBoard:SetAsBullshitTeam( TEAM_CONNECTING )
 	ScoreBoard:SetShowScoreboardHeaders( GAMEMODE.TeamBased )
 	
-	if ( GAMEMODE.TeamBased ) then
-		ScoreBoard:SetAsBullshitTeam( TEAM_UNASSIGNED )
-		ScoreBoard:SetHorizontal( true )	
-	end
+	//if ( GAMEMODE.TeamBased ) then
+	//	ScoreBoard:SetAsBullshitTeam( TEAM_UNASSIGNED )
+	//	ScoreBoard:SetHorizontal( true )	
+	//end
 
 	ScoreBoard:SetSkin( GAMEMODE.HudSkin )
 

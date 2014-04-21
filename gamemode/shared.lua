@@ -28,7 +28,7 @@ GM.Website	= ""
 
 
 
-DeriveGamemode("fretta")
+--DeriveGamemode("fretta")
 -- Gamemode configuration.
 GM.AutomaticTeamBalance		= false
 GM.AddFragsToTeamScore		= true
@@ -46,7 +46,7 @@ GM.RoundPreStartTime		= 0
 GM.SelectModel				= false
 GM.ShowTeamName 		= false
 GM.SuicideString			= "couldn't take the pressure and committed suicide."
-GM.TeamBased 				= false
+GM.TeamBased 				= true
 GM.HudSkin 					= "PropHuntSkin" -- The Derma skin to use for the HUD components
 GM.RoundPostLength 			= 8	-- Seconds to show the 'x team won!' screen at the end of a round
 
@@ -61,12 +61,12 @@ function GM:CreateTeams()
 	
 	
 	team.SetUp(TEAM_HUNTERS, "Humans", Color(150, 205, 255, 255))
-	team.SetSpawnPoint(TEAM_HUNTERS, {"info_player_counterterrorist", "info_player_combine", "info_player_deathmatch", "info_player_axis"})
+	team.SetSpawnPoint(TEAM_HUNTERS, {"info_player_counterterrorist", "info_player_combine", "info_player_deathmatch", "info_player_axis","info_player_terrorist", "info_player_rebel", "info_player_deathmatch", "info_player_allies"})
 	team.SetClass(TEAM_HUNTERS, {"Humans"})
 
 	
-	team.SetUp(TEAM_PROPS, "Infected", Color(255, 60, 60, 255))
-	team.SetSpawnPoint(TEAM_PROPS, {"info_player_terrorist", "info_player_rebel", "info_player_deathmatch", "info_player_allies"})
+	team.SetUp(TEAM_PROPS, "Infected", Color(150, 205, 255, 255))
+	team.SetSpawnPoint(TEAM_PROPS, {"info_player_counterterrorist", "info_player_combine", "info_player_deathmatch", "info_player_axis","info_player_terrorist", "info_player_rebel", "info_player_deathmatch", "info_player_allies"})
 	team.SetClass(TEAM_PROPS, {"Infected"})
 	
 	
@@ -74,9 +74,9 @@ end
 
 function GM:PlayerLoadout( pl )
 	if( pl:Team() == TEAM_PROPS) then
-		pl:Give("weapon_hys_knife")
 		pl:GiveAmmo(255, "SMG1")
 		pl:Give("weapon_smg1")
+		pl:Give("weapon_hys_knife")
 	elseif ( pl:Team() == TEAM_HUNTERS) then
 		pl:GiveAmmo(255, "SMG1")
 		pl:Give("weapon_smg1")
